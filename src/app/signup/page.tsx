@@ -4,6 +4,8 @@ import { FiUser, FiLock, FiChevronDown, FiArrowRight, FiMail, FiMapPin } from 'r
 import { FaUserCog } from 'react-icons/fa';
 import { BiBuildings } from 'react-icons/bi';
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import axiosInstance from '@/lib/axios';
 
 export default function SignupPage() {
   const [username, setUsername] = useState<string>('');
@@ -12,6 +14,35 @@ export default function SignupPage() {
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<string>('');
   const [location, setLocation] = useState<string>('');
+  const router = useRouter();
+
+  const handleSignup = async () => {
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match");
+    return;
+  }
+
+  try {
+
+    await axiosInstance.post("/api/auth/register", {
+      username,
+      password,
+      email,
+      role,
+      location
+    });
+
+    alert("User Registered Successfully");
+
+    router.push("/login");
+
+  } catch (error) {
+
+    console.error(error);
+    alert("Registration Failed");
+  }
+};
 
   return (
     <div 
@@ -41,7 +72,9 @@ export default function SignupPage() {
 
         {/* Form Content */}
         <div className="p-8">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+         <form className="space-y-6" onSubmit={(e) => { e.preventDefault();
+                                                          handleSignup();}}>
+
             
             {/* Username */}
             <div className="space-y-2">

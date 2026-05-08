@@ -3,11 +3,50 @@ import React, { useState } from 'react';
 import { FiUser, FiLock, FiChevronDown, FiArrowRight } from 'react-icons/fi';
 import { FaUserCog } from 'react-icons/fa';
 import { BiBuildings } from 'react-icons/bi';
+import axiosInstance from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const router = useRouter();
+
+  const handleLogin = async () => {
+
+  try {
+
+    console.log("Logging in...");
+
+    const response = await axiosInstance.post(
+  "/api/auth/login",
+  {
+    username,
+    password
+  }
+);
+
+    console.log("FULL RESPONSE:", response);
+
+    const token = response.data.token;
+
+    console.log("TOKEN:", token);
+
+    localStorage.setItem("token", token);
+
+   
+
+    router.push("/stock-issue");
+
+  } catch (error: any) {
+
+    console.error("LOGIN ERROR:", error);
+
+    console.log(error.response);
+
+    alert("Invalid Credentials");
+  }
+};
 
   return (
     <div 
@@ -37,7 +76,10 @@ export default function LoginPage() {
 
         {/* Form Content */}
         <div className="p-8">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={(e) => { e.preventDefault();
+                                                           handleLogin();
+                                                                         }}>
+
             
             {/* Username */}
             <div className="space-y-2">
