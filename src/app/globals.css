@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #eef1f4;
   --foreground: #171717;
 }
 
@@ -10,6 +10,24 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-primary: #953002;
+  --color-secondary: #FFB401;
+
+  --color-info: #2F80ED;
+  --color-success: #27AE60;
+  --color-warning: #E2B93B;
+  --color-error: #EB5757;
+
+  --color-black-1: #000000;
+  --color-black-2: #1D1D1D;
+  --color-black-3: #282828;
+
+  --color-gray-1: #333333;
+  --color-gray-2: #4F4F4F;
+  --color-gray-3: #828282;
+  --color-gray-4: #B0B0B0;
+  --color-gray-5: #E0E0E0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +41,115 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.input {
+  @apply w-full border px-3 py-2 rounded-lg;
+}
+
+.card {
+  @apply bg-[#eef1f4] p-4 rounded-xl shadow text-center;
+}
+
+/* ============================================================
+   STOCKWISE HERO DASHBOARD ANIMATION
+   ============================================================ */
+
+/*
+   NORMAL STATE
+
+   The dashboard gently moves:
+   - up
+   - down
+
+   And has a VERY subtle rotation to make it feel
+   like a floating modern UI card.
+*/
+
+@keyframes stockwise-float {
+  0% {
+    transform: translateY(0px) rotate(-1.2deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(1.2deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(-1.2deg);
+  }
+}
+
+
+/*
+   HOVER STATE
+
+   When the user places the mouse over the dashboard:
+   - rotation becomes 0deg
+   - dashboard continues floating
+   - tiny scale creates a premium interactive effect
+*/
+
+@keyframes stockwise-hover-float {
+  0% {
+    transform: translateY(0px) scale(1.005) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.015) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(0px) scale(1.005) rotate(0deg);
+  }
+}
+
+
+/*
+   DEFAULT HERO IMAGE
+*/
+
+.stockwise-hero-image {
+  animation-name: stockwise-float;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  transform-origin: center center;
+
+  will-change: transform;
+
+  transition:
+    filter 500ms ease;
+}
+
+
+/*
+   HOVER HERO IMAGE
+*/
+
+.stockwise-hero-image:hover {
+  animation-name: stockwise-hover-float;
+  animation-duration: 3.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  filter: drop-shadow(0 20px 30px rgba(149, 48, 2, 0.16));
+}
+
+
+/*
+   ACCESSIBILITY
+
+   Users who have enabled reduced motion
+   will not get the animation.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .stockwise-hero-image {
+    animation: none;
+    transition: none;
+    transform: none;
+    filter: none;
+  }
 }
